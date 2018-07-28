@@ -13,42 +13,44 @@ class Rankings extends Component {
     }
 
     renderCard = ({ item }) => {
-        return (<RankingCard uni={item} />);
+        return ( < RankingCard uni = { item }
+            />);
+        }
+
+        render() {
+            return ( <
+                View style = { styles.container } >
+                <
+                FlatList style = { styles.list }
+                ListHeaderComponent = { ListHeader({ headerImage: HEADER, title: 'Inter University Games 2018 Ranking', discription: 'Overall ranking based on points earned so far...' }) }
+                data = { this.props.ranks }
+                renderItem = { this.renderCard }
+                keyExtractor = { item => item.name }
+                showsVerticalScrollIndicator = { false }
+                refreshing = { this.props.refreshing }
+                onRefresh = {
+                    () => { this.props.fetchRankings() } }
+                /> <
+                /View>
+            );
+        }
     }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <FlatList
-                    style={styles.list}
-                    ListHeaderComponent={ListHeader({ headerImage: HEADER, title:'Inter University Games 2017 Ranking', discription:'Overall ranking based on points earned so far...' })}
-                    data={this.props.ranks}
-                    renderItem={this.renderCard}
-                    keyExtractor={item => item.name}
-                    showsVerticalScrollIndicator={false}
-                    refreshing={this.props.refreshing}
-                    onRefresh={() => { this.props.fetchRankings() }}
-                />
-            </View>
-        );
-    }
-}
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: '#efefef'
+        },
+        list: {
+            marginHorizontal: 0
+        }
+    });
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#efefef'
-    },
-    list: {
-        marginHorizontal: 0
-    }
-});
-
-const mapStateToProps = (state) => {
-    return {
-        ranks: state.rankings.ranks,
-        refreshing: state.rankings.refreshing
+    const mapStateToProps = (state) => {
+        return {
+            ranks: state.rankings.ranks,
+            refreshing: state.rankings.refreshing
+        };
     };
-};
 
-export default connect(mapStateToProps, { fetchRankings })(Rankings);
+    export default connect(mapStateToProps, { fetchRankings })(Rankings);
